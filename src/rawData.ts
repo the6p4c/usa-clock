@@ -1,3 +1,5 @@
+// United States Census Bureau data
+// https://data.census.gov/table?q=est2022-pop&tid=DECENNIALDHC2020.P1
 export const populations: { [keys: string]: number; } = {
   "Alabama": 5024279,
   "Alaska": 733391,
@@ -53,6 +55,8 @@ export const populations: { [keys: string]: number; } = {
   "Puerto Rico": 3285874
 };
 
+// Collated from https://www.nationsonline.org/oneworld/map/US-timezone_map.htm and
+// http://efele.net/maps/tz/us/
 export const timezones: { [keys: string]: string[]; } = {
   // Mainland USA
   "America/Los_Angeles": [
