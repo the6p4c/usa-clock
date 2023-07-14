@@ -43,6 +43,8 @@ body {
   width: 80%;
 
   margin: 0 auto;
+
+  cursor: pointer;
 }
 
 #container.no-graph > #graph {
@@ -71,6 +73,24 @@ body {
   stroke: #27a4dd;
   stroke-width: 2px;
   fill: none;
+}
+
+.graph-text {
+  fill: #aaa;
+
+  font-size: 0.7rem;
+}
+
+.graph-text-left {
+  text-anchor: left;
+}
+
+.graph-text-middle {
+  text-anchor: middle;
+}
+
+.graph-text-right {
+  text-anchor: end;
 }
 
 #signature {
