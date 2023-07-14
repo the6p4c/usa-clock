@@ -1,8 +1,8 @@
+import { DateTime } from 'luxon';
 import React from 'react';
+import Twemoji from 'react-twemoji';
 import './App.css';
 import fractionAwake from './fractionAwake';
-import { DateTime } from 'luxon';
-import Twemoji from 'react-twemoji';
 
 function useDate() {
   const [now, setNow] = React.useState(DateTime.now());
@@ -16,7 +16,7 @@ function useDate() {
   return now;
 }
 
-function useGraphVisible(): [any, any] {
+function useGraphVisible() {
   const key = "graphVisible";
 
   const [graphVisible, setGraphVisible] = React.useState(() => {
@@ -27,11 +27,16 @@ function useGraphVisible(): [any, any] {
 
   React.useEffect(() => localStorage.setItem(key, "" + graphVisible), [graphVisible]);
 
-  return [graphVisible, setGraphVisible];
+  return [graphVisible, setGraphVisible] as const;
 }
 
-function pathToD(path: [number, number][]): string {
-  function command(command: string, [x, y]: [number, number]): string {
+interface Coord {
+  x: number;
+  y: number;
+}
+
+function pathToD(path: Coord[]) {
+  function command(command: string, {x, y}: Coord) {
     return `${command}${x} ${y}`;
   }
 
@@ -48,9 +53,9 @@ function App() {
   const percentage = fractionAwake(now) * 100;
   const percentageString = percentage.toLocaleString(undefined, { maximumFractionDigits: 1 });
 
-  // Intentionally more than 24 hours to give slack on left + right
-  const hours = Array.from({ length: 26 }, (_, i) => [i - 12, i]);
-  const path: [number, number][] = hours.map(([h, xi]) => {
+  // Need 25 hours to fill entire graph + 26th hour to give slack for shifting by minutes
+  const hours = Array.from({ length: 26 }, (_, i) => [i - 12, i] as const);
+  const path = hours.map(([h, xi]) => {
     const fraction = fractionAwake(now.plus({ hours: h }));
 
     // Shift by minutes to make motion smooth
@@ -58,7 +63,7 @@ function App() {
     // Keep a bit of distance from the top and bottom of the SVG
     const y = Math.round((1 - fraction) * 68) + 1;
 
-    return [x, y];
+    return { x, y };
   });
 
   return (
