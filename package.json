@@ -7,6 +7,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "gh-pages": "^5.0.0",
     "luxon": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -32,7 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "react-scripts build && ghp-import --no-jekyll -b gh-pages -m \"Deploy on `date -u`\" -p -f build/"
+    "deploy": "react-scripts build && gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
