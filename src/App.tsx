@@ -67,7 +67,7 @@ function App() {
   });
 
   return (
-    <div id="container" className={graphVisible ? "with-graph" : "no-graph"}>
+    <div id="container" className={graphVisible ? "" : "no-graph"}>
       <div id="percentage" onClick={() => setGraphVisible(!graphVisible)}>{percentageString}%</div>
       <svg id="graph" viewBox="0 0 240 70">
         <line className="graph-12" x1="1" x2="1" y1="0" y2="70" />
