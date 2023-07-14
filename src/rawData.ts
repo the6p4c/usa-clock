@@ -119,13 +119,46 @@ export const timezones: { [keys: string]: string[]; } = {
     "Arizona",
   ],
   // Odd ones out
-  "America/Anchrorage": [
+  "US/Alaska": [
     "Alaska",
   ],
   "America/Puerto_Rico": [
     "Puerto Rico",
   ],
-  "America/Honolulu": [
+  "Pacific/Honolulu": [
     "Hawaii"
   ],
 };
+
+// Collated from BLS data, e.g. "Percent participating on an avg day - Sleeping, 10am-11am"
+// https://beta.bls.gov/dataViewer/view/timeseries/TUU30105AA01051617
+export const fractionAsleepData = [
+  // 12am (midnight)
+  0.866,
+  0.927,
+  0.948,
+  0.954,
+  0.924,
+  0.859,
+  // 6am
+  0.672,
+  0.435,
+  0.242,
+  0.132,
+  0.067,
+  0.044,
+  // 12pm (midday)
+  0.034,
+  0.041,
+  0.048,
+  0.048,
+  0.044,
+  0.034,
+  // 6pm
+  0.027,
+  0.035,
+  0.071,
+  0.191,
+  0.454,
+  0.719
+];
