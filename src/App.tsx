@@ -68,7 +68,13 @@ function App() {
 
   return (
     <div id="container" className={graphVisible ? "" : "no-graph"}>
-      <div id="percentage" onClick={() => setGraphVisible(!graphVisible)}>{percentageString}%</div>
+      <div
+        id="percentage"
+        title={`Approximately ${percentageString}% of Americans currently awake (click to toggle graph)`}
+        onClick={() => setGraphVisible(!graphVisible)}
+      >
+        {percentageString}%
+      </div>
       <svg id="graph" viewBox="0 0 240 70">
         <line className="graph-12" x1="1" x2="1" y1="0" y2="70" />
         <line className="graph-6" x1="60" x2="60" y1="0" y2="70" />
@@ -79,7 +85,9 @@ function App() {
         <path className="graph-curve" d={pathToD(path)} />
       </svg>
       <div id="signature">
-        <Twemoji noWrapper={true} options={{ className: "emoji" }}><span>💜 🐶</span></Twemoji>
+        <Twemoji noWrapper options={{ className: "emoji" }}>
+          <span>💜 🐶</span>
+        </Twemoji>
       </div>
     </div>
   );
