@@ -77,7 +77,6 @@ export const timezones: { [keys: string]: string[]; } = {
     "Alabama",
     "Arkansas",
     "Illinois",
-    "Illinois",
     "Iowa",
     "Kansas",
     "Kentucky",

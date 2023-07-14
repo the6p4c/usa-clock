@@ -28,44 +28,44 @@ const sleepCycle = {
 };
 
 // Coalescing raw data into nice objects
-interface State {
-  name: string;
-  population: number;
-  timezone: string;
-}
+type Timezones = [timezone: string, population: number][];
 
-const states: State[] = (() => {
-  function resolveTimezone(state: string) {
-    for (const [timezone, states] of Object.entries(raw.timezones)) {
-      if (states.includes(state)) {
-        return timezone;
-      }
-    }
-  
-    throw new Error(`could not find timezone for ${state}`);
-  }
+const timezones: Timezones = Object.entries(raw.timezones)
+  .map(([timezone, states]) => {
+    // Add up populations of all states within this timezone
+    let totalPopulation = states
+      .map(stateName => raw.populations[stateName])
+      .reduce(sum, 0);
+    return [timezone, totalPopulation];
+  });
 
-  return Object.entries(raw.populations)
-    .map(([name, population]) => {
-      const timezone = resolveTimezone(name);
-      return { name, population, timezone };
-    });
-})();
+const totalPopulation = Object.values(raw.populations).reduce(sum, 0);
 
-const totalPopulation = Object.values(states).map(s => s.population).reduce(sum, 0);
+function fractionAwakeHour(now: DateTime) {
+  const awakePopulation = timezones.map(([timezone, population]) => {
+    const timezoneNow = now.setZone(timezone);
 
-export default function fractionAwake(now: DateTime) {
-  const awakePopulation = states.map(state => {
-    const stateTime = now.setZone(state.timezone);
-
-    const fraction = (cycle: SleepCycle) =>
-      cycle.map(([hour, fraction]) => stateTime.hour >= hour ? fraction : 0)
-        .reduce(sum, 0);
+    const fraction = (cycle: SleepCycle) => cycle
+      .map(([hour, fraction]) => timezoneNow.hour >= hour ? fraction : 0)
+      .reduce(sum, 0);
     const fractionAwake = 
-      stateTime.hour < ungodlyHour ? 1 - fraction(sleepCycle.sleep) : fraction(sleepCycle.wake);
+      timezoneNow.hour < ungodlyHour ? 1 - fraction(sleepCycle.sleep) : fraction(sleepCycle.wake);
 
-    return fractionAwake * state.population;
+    return fractionAwake * population;
   }).reduce(sum, 0);
 
   return awakePopulation / totalPopulation;
+}
+
+function interp(x: number, p0: {x: number, y: number}, p1: {x: number, y: number}) {
+  return (p0.y * (p1.x - x) + p1.y * (x - p0.x)) / (p1.x - p0.x);
+}
+
+export default function fractionAwake(now: DateTime) {
+  const next = now.plus({ hours: 1 });
+  return interp(
+    now.minute,
+    { x: 0, y: fractionAwakeHour(now) },
+    { x: 60, y: fractionAwakeHour(next) }
+  );
 }

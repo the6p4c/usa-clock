@@ -31,12 +31,12 @@ function useGraphVisible() {
   return [graphVisible, setGraphVisible] as const;
 }
 
-function App() {
+export default function App() {
   const now = useDate();
   const [graphVisible, setGraphVisible] = useGraphVisible();
 
   const percentage = fractionAwake(now) * 100;
-  const percentageString = percentage.toLocaleString(undefined, { maximumFractionDigits: 1 });
+  const percentageString = percentage.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
   return (
     <div id="container" className={graphVisible ? "" : "no-graph"}>
@@ -56,5 +56,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

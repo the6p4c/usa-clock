@@ -1,5 +1,4 @@
 import { DateTime } from 'luxon';
-import React from 'react';
 import fractionAwake from './fractionAwake';
 
 interface Coord {
@@ -19,26 +18,32 @@ function pathToD(path: Coord[]) {
 }
 
 export default function Graph(props: { id: string, now: DateTime }) {
-  // Need 25 hours to fill entire graph + 26th hour to give slack for shifting by minutes
-  const hours = Array.from({ length: 26 }, (_, i) => [i - 12, i] as const);
-  const path = hours.map(([h, xi]) => {
-    const fraction = fractionAwake(props.now.plus({ hours: h }));
+  const width = 240;
+  const height = 70;
 
-    // Shift by minutes to make motion smooth
-    const x = xi * 10 - Math.round(props.now.minute / 6);
-    // Keep a bit of distance from the top and bottom of the SVG
-    const y = Math.round((1 - fraction) * 68) + 1;
+  const samplesPerHour = 10; // How much subsampling?
+  const curvePadding = 1; // Space to leave between top and bottom of graph and curve
 
-    return { x, y };
+  const hours = Array.from({ length: 25 * samplesPerHour }, (_, i) => [i / samplesPerHour - 12, i] as const);
+  const path = hours.map(([hour, hourIndex]) => {
+    const fraction = fractionAwake(props.now.plus({ hours: hour }));
+
+    const x = (hourIndex / samplesPerHour) * (width / 24);
+    const y = (1 - fraction) * (height - 2 * curvePadding) + curvePadding;
+
+    return { x: Math.round(x), y: Math.round(y) };
   });
 
+  const barX = (i: number) => i * width / 4;
+  const barHeight = height;
+
   return (
-    <svg id={props.id} viewBox="0 0 240 70">
-      <line className="graph-12" x1="1" x2="1" y1="0" y2="70" />
-      <line className="graph-6" x1="60" x2="60" y1="0" y2="70" />
-      <line className="graph-now" x1="120" x2="120" y1="0" y2="70" />
-      <line className="graph-6" x1="180" x2="180" y1="0" y2="70" />
-      <line className="graph-12" x1="239" x2="239" y1="0" y2="70" />
+    <svg id={props.id} viewBox={`0 0 ${width} ${height}`}>
+      <line className="graph-12" x1={barX(0) + 1} x2={barX(0) + 1 } y1={0} y2={barHeight} />
+      <line className="graph-6" x1={barX(1)} x2={barX(1)} y1={0} y2={barHeight} />
+      <line className="graph-now" x1={barX(2)} x2={barX(2)} y1={0} y2={barHeight} />
+      <line className="graph-6" x1={barX(3)} x2={barX(3)} y1={0} y2={barHeight} />
+      <line className="graph-12" x1={barX(4) - 1} x2={barX(4) - 1} y1={0} y2={barHeight} />
 
       <path className="graph-curve" d={pathToD(path)} />
     </svg>

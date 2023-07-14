@@ -40,8 +40,7 @@ body {
   grid-row-start: 3;
 
   display: block;
-  width: 240px;
-  aspect-ratio: 240 / 70;
+  width: 80%;
 
   margin: 0 auto;
 }
