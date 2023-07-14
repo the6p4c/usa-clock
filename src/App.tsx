@@ -21,7 +21,10 @@ function pathToD(path: [number, number][]): string {
     return `${command}${x} ${y}`;
   }
 
-  return command("M", path[0]) + " " + path.slice(1).map(c => command("L", c)).join(" ");
+  return [
+    command("M", path[0]),
+    ...path.slice(1).map(c => command("L", c)),
+  ].join(" ");
 }
 
 function App() {
@@ -31,12 +34,12 @@ function App() {
   const percentageString = percentage.toLocaleString(undefined, { maximumFractionDigits: 1 });
 
   // Intentionally more than 24 hours to give slack on left + right
-  const hours = Array.from({ length: 27 }, (_, i) => [i, i - 14]);
-  const path: [number, number][] = hours.map(([i, h]) => {
+  const hours = Array.from({ length: 26 }, (_, i) => [i - 12, i]);
+  const path: [number, number][] = hours.map(([h, xi]) => {
     const fraction = fractionAwake(now.plus({ hours: h }));
 
     // Shift by minutes to make motion smooth
-    const x = i * 10 - Math.round(now.minute / 6);
+    const x = xi * 10 - Math.round(now.minute / 6);
     // Keep a bit of distance from the top and bottom of the SVG
     const y = Math.round((1 - fraction) * 68) + 1;
 
