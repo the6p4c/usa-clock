@@ -22,7 +22,7 @@ export default function Graph(props: { id: string, now: DateTime }) {
   const width = 240;
   const height = 99; // = (odd multiple of 4 + text gap) in order to start and end bars with dash
 
-  const samplesPerHour = 10; // How much subsampling?
+  const samplesPerHour = 3; // How much subsampling?
   const curvePadding = 1; // Space to leave between top and bottom of graph and curve
 
   const barX = (i: number) => i * width / 4;

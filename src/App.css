@@ -72,6 +72,7 @@ body {
 .graph-curve {
   stroke: #27a4dd;
   stroke-width: 2px;
+  stroke-linejoin: round;
   fill: none;
 }
 
