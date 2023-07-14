@@ -28,6 +28,12 @@ body {
   font-size: 5rem;
   font-weight: 700;
   text-align: center;
+
+  cursor: pointer;
+}
+
+#container.no-graph > #percentage {
+  grid-row: 2 / span 2;
 }
 
 #graph {
@@ -38,6 +44,10 @@ body {
   aspect-ratio: 240 / 70;
 
   margin: 0 auto;
+}
+
+#container.no-graph > #graph {
+  display: none;
 }
 
 .graph-now, .graph-12, .graph-6 {

@@ -16,6 +16,20 @@ function useDate() {
   return now;
 }
 
+function useGraphVisible(): [any, any] {
+  const key = "graphVisible";
+
+  const [graphVisible, setGraphVisible] = React.useState(() => {
+    const graphVisible = localStorage.getItem(key);
+    // Show the graph by default on first visit
+    return graphVisible == null ? true : graphVisible === "true";
+  });
+
+  React.useEffect(() => localStorage.setItem(key, "" + graphVisible), [graphVisible]);
+
+  return [graphVisible, setGraphVisible];
+}
+
 function pathToD(path: [number, number][]): string {
   function command(command: string, [x, y]: [number, number]): string {
     return `${command}${x} ${y}`;
@@ -29,6 +43,7 @@ function pathToD(path: [number, number][]): string {
 
 function App() {
   const now = useDate();
+  const [graphVisible, setGraphVisible] = useGraphVisible();
 
   const percentage = fractionAwake(now) * 100;
   const percentageString = percentage.toLocaleString(undefined, { maximumFractionDigits: 1 });
@@ -47,8 +62,8 @@ function App() {
   });
 
   return (
-    <div id="container">
-      <div id="percentage">{percentageString}%</div>
+    <div id="container" className={graphVisible ? "with-graph" : "no-graph"}>
+      <div id="percentage" onClick={() => setGraphVisible(!graphVisible)}>{percentageString}%</div>
       <svg id="graph" viewBox="0 0 240 70">
         <line className="graph-12" x1="1" x2="1" y1="0" y2="70" />
         <line className="graph-6" x1="60" x2="60" y1="0" y2="70" />
