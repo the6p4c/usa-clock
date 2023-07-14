@@ -8,6 +8,23 @@ html, body, #root {
   overflow: hidden;
 }
 
+.dark-mode {
+  background-color: #111111;
+  color: #ffffff;
+}
+
+.dark-mode .graph-now {
+  stroke: #666666;
+}
+
+.dark-mode .graph-12, .dark-mode .graph-6 {
+  stroke: #444444;
+}
+
+.dark-mode .graph-text {
+  fill: #666666;
+}
+
 body {
   font-family: "Atkinson Hyperlegible", sans-serif;
 }
@@ -58,11 +75,11 @@ body {
 }
 
 .graph-now {
-  stroke: #aaa;
+  stroke: #aaaaaa;
 }
 
 .graph-12, .graph-6 {
-  stroke: #ddd;
+  stroke: #dddddd;
 }
 
 .graph-6 {
@@ -104,4 +121,16 @@ body {
 
 .emoji {
   width: 24px;
+}
+
+#skin-toggle {
+  margin: 10px;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  cursor: pointer;
+
+  font-size: 1.3rem;
 }

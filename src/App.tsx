@@ -1,4 +1,6 @@
 import { DateTime } from 'luxon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMoon, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import Twemoji from 'react-twemoji';
 import './App.css';
@@ -17,42 +19,60 @@ function useDate() {
   return now;
 }
 
-function useGraphVisible() {
-  const key = "graphVisible";
-
-  const [graphVisible, setGraphVisible] = React.useState(() => {
-    const graphVisible = localStorage.getItem(key);
-    // Show the graph by default on first visit
-    return graphVisible == null ? true : graphVisible === "true";
+function useLocalStorage<T>(key: string, defaultValue: T) {
+  const [value, setValue] = React.useState(() => {
+    const value = localStorage.getItem(key);
+    if (value != null) {
+      return JSON.parse(value) as T;
+    } else {
+      return defaultValue;
+    }
   });
 
-  React.useEffect(() => localStorage.setItem(key, "" + graphVisible), [graphVisible]);
+  React.useEffect(() => localStorage.setItem(key, JSON.stringify(value)), [key, value]);
 
-  return [graphVisible, setGraphVisible] as const;
+  return [value, setValue] as const;
 }
 
 export default function App() {
   const now = useDate();
-  const [graphVisible, setGraphVisible] = useGraphVisible();
+  const [isDarkMode, setIsDarkMode] = useLocalStorage("isDarkMode", false);
+  const [graphVisible, setGraphVisible] = useLocalStorage("graphVisible", true);
 
   const percentage = fractionAwake(now) * 100;
   const percentageString = percentage.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
+  React.useEffect(() => {
+    const themeColor = isDarkMode ? "#111111" : "#ffffff";
+
+    document.body.classList.toggle("dark-mode", isDarkMode);
+    (document.querySelector("meta[name='theme-color']") as any).content = themeColor;
+  }, [isDarkMode]);
+
   return (
-    <div id="container" className={graphVisible ? "" : "no-graph"}>
+    <>
+      <div id="container" className={graphVisible ? "" : "no-graph"}>
+        <div
+          id="percentage"
+          title={`Approximately ${percentageString}% of Americans currently awake (click to toggle graph)`}
+          onClick={() => setGraphVisible(!graphVisible)}
+        >
+          {percentageString}%
+        </div>
+        <Graph id="graph" now={now} />
+        <div id="signature">
+          <Twemoji noWrapper options={{ className: "emoji" }}>
+            <span>💜 🐶</span>
+          </Twemoji>
+        </div>
+      </div>
       <div
-        id="percentage"
-        title={`Approximately ${percentageString}% of Americans currently awake (click to toggle graph)`}
-        onClick={() => setGraphVisible(!graphVisible)}
+        id="skin-toggle"
+        title={`Click to change to ${isDarkMode ? "light mode" : "dark mode"}`}
+        onClick={() => setIsDarkMode(!isDarkMode)}
       >
-        {percentageString}%
+        {isDarkMode ? <FontAwesomeIcon icon={faLightbulb} /> : <FontAwesomeIcon icon={faMoon} />}
       </div>
-      <Graph id="graph" now={now} />
-      <div id="signature">
-        <Twemoji noWrapper options={{ className: "emoji" }}>
-          <span>💜 🐶</span>
-        </Twemoji>
-      </div>
-    </div>
+    </>
   );
 }
