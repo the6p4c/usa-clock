@@ -6,6 +6,8 @@ html, body, #root {
   padding: 0;
 
   overflow: hidden;
+  touch-action: none;
+  user-select: none;
 }
 
 .dark-mode {
@@ -31,7 +33,7 @@ body {
 
 #container {
   display: grid;
-  grid-template-rows: 1fr repeat(2, auto) 1fr;
+  grid-template-rows: 1fr repeat(3, auto) 1fr;
 
   max-width: 300px;
   height: 100%;
@@ -49,8 +51,8 @@ body {
   cursor: pointer;
 }
 
-#container.no-graph > #percentage {
-  grid-row: 2 / span 2;
+#container.no-extras > #percentage {
+  grid-row: 2 / span 3;
 }
 
 #graph {
@@ -64,7 +66,7 @@ body {
   cursor: pointer;
 }
 
-#container.no-graph > #graph {
+#container.no-extras > #graph {
   display: none;
 }
 
@@ -94,7 +96,7 @@ body {
 }
 
 .graph-text {
-  fill: #aaa;
+  fill: #aaaaaa;
 
   font-size: 0.7rem;
 }
@@ -111,8 +113,44 @@ body {
   text-anchor: end;
 }
 
-#signature {
+#container.no-extras > #slider {
+  display: none;
+}
+
+#slider {
   grid-row-start: 4;
+
+  display: block;
+  width: 80%;
+
+  margin: 0 auto;
+}
+
+.slider-bar {
+  visibility: hidden;
+
+  stroke: #777777;
+  stroke-width: 2px;
+  stroke-linecap: round;
+}
+
+.slider-dragging .slider-bar {
+  visibility: visible;
+}
+
+.slider-dot {
+  fill: #444444;
+
+  cursor: ew-resize;
+}
+
+.slider-dot:hover {
+  fill: #aaaaaa;
+}
+
+#signature {
+  grid-row-start: 5;
+
   margin-top: auto;
   margin-bottom: 1rem;
 

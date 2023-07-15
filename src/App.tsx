@@ -6,6 +6,7 @@ import Twemoji from 'react-twemoji';
 import './App.css';
 import fractionAwake from './fractionAwake';
 import Graph from './Graph';
+import Slider from './Slider';
 
 function useDate() {
   const [now, setNow] = React.useState(DateTime.now());
@@ -36,10 +37,14 @@ function useLocalStorage<T>(key: string, defaultValue: T) {
 
 export default function App() {
   const now = useDate();
-  const [isDarkMode, setIsDarkMode] = useLocalStorage("isDarkMode", false);
-  const [graphVisible, setGraphVisible] = useLocalStorage("graphVisible", true);
+  const [timeOffset, setTimeOffset] = React.useState(0);
 
-  const percentage = fractionAwake(now) * 100;
+  const nowOffset = now.plus({ hours: timeOffset });
+
+  const [isDarkMode, setIsDarkMode] = useLocalStorage("isDarkMode", false);
+  const [extrasVisible, setExtrasVisible] = useLocalStorage("extrasVisible", true);
+
+  const percentage = fractionAwake(nowOffset) * 100;
   const percentageString = percentage.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
   React.useEffect(() => {
@@ -51,15 +56,16 @@ export default function App() {
 
   return (
     <>
-      <div id="container" className={graphVisible ? "" : "no-graph"}>
+      <div id="container" className={extrasVisible ? "" : "no-extras"}>
         <div
           id="percentage"
           title={`Approximately ${percentageString}% of Americans currently awake (click to toggle graph)`}
-          onClick={() => setGraphVisible(!graphVisible)}
+          onClick={() => setExtrasVisible(!extrasVisible)}
         >
           {percentageString}%
         </div>
-        <Graph id="graph" now={now} />
+        <Graph id="graph" now={nowOffset} />
+        <Slider onDrag={(fraction) => setTimeOffset(fraction * 24 - 12)} />
         <div id="signature">
           <Twemoji noWrapper options={{ className: "emoji" }}>
             <span>💜 🐶</span>
