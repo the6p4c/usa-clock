@@ -10,6 +10,10 @@
   visibility: visible;
 }
 
+.touchTarget {
+  opacity: 0;
+}
+
 .dot {
   fill: var(--secondary-lc-color);
 
