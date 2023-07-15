@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faLightbulb } from "@fortawesome/free-solid-svg-icons";
+import throttle from "lodash.throttle";
 import { DateTime } from "luxon";
 import React from "react";
 import styles from "./App.module.css";
@@ -76,7 +77,7 @@ export default function App() {
       {percentageString}%
     </div>
     <Graph className={styles.graph} region={region} now={now} />
-    <Slider className={styles.slider} onChange={t => setTimeOffset(t * 24 - 12)} />
+    <Slider className={styles.slider} onChange={throttle(t => setTimeOffset(t * 24 - 12), 20)} />
     <RegionSelector
       className={styles.regionSelector}
       regions={regions} id={regionId} onChange={id => setRegionId(id)}

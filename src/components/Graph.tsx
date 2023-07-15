@@ -9,12 +9,12 @@ interface Coord {
 }
 
 function pathToD(path: Coord[]) {
-  function twoDP(v: number): string {
-    return v.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  function round(v: number): string {
+    return v.toLocaleString(undefined, { maximumFractionDigits: 3 });
   }
 
   function command(command: string, {x, y}: Coord) {
-    return `${command}${twoDP(x)} ${twoDP(y)}`;
+    return `${command}${round(x)} ${round(y)}`;
   }
 
   return [
@@ -106,11 +106,12 @@ export default function Graph(props: GraphProps) {
     const x = (hourIndex - now.minute / 60) * (width / 24);
     const y = (1 - fraction) * (barHeight - 2 * curvePadding) + curvePadding;
 
-    return { x: Math.round(x), y: Math.round(y) };
+    return { x, y };
   });
 
   const [p0, p1] = [fullPath[0], fullPath[fullPath.length - 1]];
   const path = fullPath.slice(1, -1);
+  const d = pathToD(smoothPath(p0, p1, path));
 
   return (
     <svg
@@ -132,7 +133,7 @@ export default function Graph(props: GraphProps) {
         <text className={`${styles.label} ${styles.labelRight}`} x={barX(4)} y={textY}>+12</text>
       </>) : null}
 
-      <path className={styles.curve} d={pathToD(smoothPath(p0, p1, path))} />
+      <path className={styles.curve} d={d} />
     </svg>
   );
 }
