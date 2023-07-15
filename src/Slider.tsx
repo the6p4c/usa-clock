@@ -49,7 +49,9 @@ export default function Slider(props: SliderProps) {
     <circle
       className={styles.dot} cx={x} cy={height / 2} r={5}
       onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
-    />
+    >
+      <title>Click, drag, and hold to view with time shift</title>
+    </circle>
   </svg>;
 }
 
