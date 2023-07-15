@@ -1,0 +1,76 @@
+body {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body[data-theme="dark"] {
+  background-color: #111111;
+  color: #ffffff;
+}
+
+.container {
+  display: grid;
+  grid-template-rows: 1fr repeat(3, auto) 1fr;
+
+  max-width: 240px;
+  height: 100%;
+
+  margin: 0 auto;
+}
+
+.percentage {
+  grid-row-start: 2;
+
+  font-size: 5rem;
+  font-weight: 700;
+  text-align: center;
+
+  cursor: pointer;
+}
+
+.container.noExtras > .percentage {
+  grid-row: 2 / span 3;
+}
+
+.graph {
+  grid-row-start: 3;
+
+  margin: 0 auto;
+
+  cursor: pointer;
+}
+
+.container.noExtras > .graph {
+  display: none;
+}
+
+.slider {
+  grid-row-start: 4;
+
+  margin: 0 auto;
+}
+
+.container.noExtras > .slider {
+  display: none;
+}
+
+.regionSelector {
+  grid-row-start: 5;
+
+  margin-top: auto;
+  margin-bottom: 1rem;
+
+  text-align: center;
+}
+
+.themeToggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  margin: 10px;
+
+  cursor: pointer;
+
+  font-size: 1.3rem;
+}

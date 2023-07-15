@@ -1,6 +1,12 @@
-import React from 'react';
+import React from "react";
+import styles from "./Slider.module.css";
 
-export default function Slider(props: { onDrag: (t: number) => void }) {
+export interface SliderProps {
+  className: string;
+  onChange: (t: number) => void;
+}
+
+export default function Slider(props: SliderProps) {
   const [width, height] = [240, 20];
   const defaultX = width / 2;
   const gapX = 10;
@@ -9,7 +15,7 @@ export default function Slider(props: { onDrag: (t: number) => void }) {
   const [isDragging, setIsDragging] = React.useState(false);
   const [x, setX] = React.useState(defaultX);
 
-  React.useEffect(() => props.onDrag((x - minX) / (maxX - minX)), [props, x, minX, maxX]);
+  React.useEffect(() => props.onChange((x - minX) / (maxX - minX)), [props, x, minX, maxX]);
 
   const onPointerDown = (e: React.PointerEvent<SVGCircleElement>) => {
     // Make sure we receive the pointerup event no matter if the user moves the cursor off of the
@@ -36,14 +42,15 @@ export default function Slider(props: { onDrag: (t: number) => void }) {
     setX(defaultX);
   };
 
-  return <svg
-    id="slider" className={isDragging ? "slider-dragging": ""}
+  return <svg className={`${props.className} ${isDragging ? styles.dragging : ""}`}
     viewBox={`0 0 ${width} ${height}`}
   >
-    <line className="slider-bar" x1={2} y1={height / 2} x2={width - 2} y2={height / 2} />
+    <line className={styles.bar} x1={2} y1={height / 2} x2={width - 2} y2={height / 2} />
     <circle
-      className="slider-dot" cx={x} cy={height / 2} r={5}
+      className={styles.dot} cx={x} cy={height / 2} r={5}
       onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
     />
   </svg>;
 }
+
+Slider.defaultProps = { className: "", onDrag: (t: number) => {} };

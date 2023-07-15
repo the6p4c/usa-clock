@@ -1,0 +1,41 @@
+:root {
+  --barNow-stroke: #aaaaaa;
+  --bar6-bar12-stroke: #dddddd;
+  --text-fill: #aaaaaa;
+}
+
+[data-theme="dark"] {
+  --barNow-stroke: #666666;
+  --bar6-bar12-stroke: #444444;
+  --text-fill: #666666;
+}
+
+.barNow, .bar12, .bar6 {
+  stroke-width: 1px;
+
+  shape-rendering: crispEdges;
+}
+
+.barNow { stroke: var(--barNow-stroke); }
+.bar12, .bar6 { stroke: var(--bar6-bar12-stroke); }
+
+.bar6 {
+  stroke-dasharray: 4, 4;
+}
+
+.curve {
+  stroke: #27a4dd;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.text {
+  fill: var(--text-fill);
+
+  font-size: 0.7rem;
+}
+
+.textLeft { text-anchor: left; }
+.textMiddle { text-anchor: middle; }
+.textRight { text-anchor: end; }

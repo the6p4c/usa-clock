@@ -18,10 +18,11 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <script>
       // Set class and theme color early to avoid flash of white when dark mode is enabled
-      var isDarkMode = localStorage.getItem("isDarkMode") === "true";
-      var themeColor = isDarkMode ? "#111111" : "#ffffff";
+      var isDarkTheme = localStorage.getItem("isDarkTheme") === "true";
+      var theme = isDarkTheme ? "dark" : "light";
+      var themeColor = isDarkTheme ? "#111111" : "#ffffff";
 
-      document.body.classList.toggle("dark-mode", isDarkMode);
+      document.body.dataset.theme = theme;
       document.querySelector("meta[name='theme-color']").content = themeColor;
     </script>
     <div id="root"></div>

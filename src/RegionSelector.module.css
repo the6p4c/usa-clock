@@ -1,0 +1,9 @@
+.flag.unselected {
+  opacity: 0.2;
+  
+  cursor: pointer;
+}
+
+.emoji {
+  width: 24px;
+}

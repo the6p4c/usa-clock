@@ -1,0 +1,33 @@
+:root {
+  --bar-stroke: #dddddd;
+  --dot-fill: #dddddd;
+  --dot-hover-fill: #aaaaaa;
+}
+
+[data-theme="dark"] {
+  --bar-stroke: #777777;
+  --dot-fill: #444444;
+  --dot-hover-fill: #aaaaaa;
+}
+
+.bar {
+  visibility: hidden;
+
+  stroke: var(--bar-stroke);
+  stroke-width: 2px;
+  stroke-linecap: round;
+}
+
+.dragging .bar {
+  visibility: visible;
+}
+
+.dot {
+  fill: var(--dot-fill);
+
+  cursor: ew-resize;
+}
+
+.dot:hover {
+  fill: var(--dot-hover-fill);
+}
