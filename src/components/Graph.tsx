@@ -9,14 +9,56 @@ interface Coord {
 }
 
 function pathToD(path: Coord[]) {
+  function twoDP(v: number): string {
+    return v.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  }
+
   function command(command: string, {x, y}: Coord) {
-    return `${command}${x} ${y}`;
+    return `${command}${twoDP(x)} ${twoDP(y)}`;
   }
 
   return [
     command("M", path[0]),
     ...path.slice(1).map(c => command("L", c)),
   ].join(" ");
+}
+
+function smoothPath(p0: Coord, p1: Coord, path: Coord[]): Coord[] {
+  const pointsPerSpline = 5;
+
+  const tangentPath = [p0, ...path, p1];
+  const m = tangentPath.slice(0, -2)
+    .map((p0, i) => {
+      const p2 = tangentPath[i + 2];
+
+      const x = (p2.x - p0.x) / 2;
+      const y = (p2.y - p0.y) / 2;
+
+      return { x, y };
+    });
+
+  return path.slice(0, -1)
+    .map((p0, i) => {
+      const [m0, m1] = [m[i], m[i + 1]];
+      const p1 = path[i + 1];
+
+      return Array.from({ length: pointsPerSpline }, (_, i) => i / pointsPerSpline)
+        .map(t => {
+          const t3 = t*t*t;
+          const t2 = t*t;
+
+          const h00 = 2*t3 - 3*t2 + 1;
+          const h10 = t3 - 2*t2 + t;
+          const h01 = -2*t3 + 3*t2;
+          const h11 = t3 - t2;
+
+          const x = h00*p0.x + h10*m0.x + h01*p1.x + h11*m1.x;
+          const y = h00*p0.y + h10*m0.y + h01*p1.y + h11*m1.y;
+
+          return { x, y };
+        });
+    })
+    .reduce((path, spline) => [...path, ...spline], []);
 }
 
 export interface GraphProps {
@@ -29,7 +71,6 @@ export interface GraphProps {
 export default function Graph(props: GraphProps) {
   // Height = (odd multiple of 4 + text gap) in order to start and end bars with dash
   const [width, height] = [240, 99];
-  const samplesPerHour = 3; // How much subsampling?
   const curvePadding = 1; // Space to leave between top and bottom of graph and curve
   const barX = (i: number) => i * width / 4;
   const barHeight = height - 15;
@@ -53,15 +94,23 @@ export default function Graph(props: GraphProps) {
     setLabelsVisible(!labelsVisible);
   };
 
-  const hours = Array.from({ length: 25 * samplesPerHour }, (_, i) => [i / samplesPerHour - 12, i] as const);
-  const path = hours.map(([hour, hourIndex]) => {
-    const fraction = props.region.fractionAwake(props.now.plus({ hours: hour }));
+  // Generates [-13..15, -1..27]
+  // We need two hours left of 0 and right of 24 so that we have one point to determining the slope,
+  // plus one point so that the curve always appears to continue off the edge of the graph - a total
+  // of 25 + 2 + 2 = 29 hours.
+  const hours = Array.from({ length: 29 }, (_, i) => [i - 13, i - 1] as const);
+  const fullPath = hours.map(([hour, hourIndex]) => {
+    const now = props.now.plus({ hours: hour });
+    const fraction = props.region.fractionAwake(now);
 
-    const x = (hourIndex / samplesPerHour) * (width / 24);
+    const x = (hourIndex - now.minute / 60) * (width / 24);
     const y = (1 - fraction) * (barHeight - 2 * curvePadding) + curvePadding;
 
     return { x: Math.round(x), y: Math.round(y) };
   });
+
+  const [p0, p1] = [fullPath[0], fullPath[fullPath.length - 1]];
+  const path = fullPath.slice(1, -1);
 
   return (
     <svg
@@ -83,7 +132,7 @@ export default function Graph(props: GraphProps) {
         <text className={`${styles.label} ${styles.labelRight}`} x={barX(4)} y={textY}>+12</text>
       </>) : null}
 
-      <path className={styles.curve} d={pathToD(path)} />
+      <path className={styles.curve} d={pathToD(smoothPath(p0, p1, path))} />
     </svg>
   );
 }

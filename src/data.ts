@@ -50,7 +50,7 @@ export class Region {
     this.totalPopulation = Object.values(raw.populations).reduce(sum);
   }
 
-  private fractionAwakeHour(now: DateTime): number {
+  fractionAwake(now: DateTime): number {
     const awakePopulation = this.populationPerTimezone
       .map(([timezone, population]) => {
         const timezoneNow = now.setZone(timezone);
@@ -59,19 +59,6 @@ export class Region {
       .reduce(sum);
 
     return awakePopulation / this.totalPopulation;
-  }
-
-  fractionAwake(now: DateTime): number {
-    function interp(x: number, p0: {x: number, y: number}, p1: {x: number, y: number}) {
-      return (p0.y * (p1.x - x) + p1.y * (x - p0.x)) / (p1.x - p0.x);
-    }
-
-    const next = now.plus({ hours: 1 });
-    return interp(
-      now.minute,
-      { x: 0, y: this.fractionAwakeHour(now) },
-      { x: 60, y: this.fractionAwakeHour(next) }
-    );
   }
 }
 
