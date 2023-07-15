@@ -1,13 +1,3 @@
-body {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-body[data-theme="dark"] {
-  background-color: #111111;
-  color: #ffffff;
-}
-
 .container {
   display: grid;
   grid-template-rows: 1fr repeat(3, auto) 1fr;

@@ -1,3 +1,21 @@
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
+
+  --highlight-color: #27a4dd;
+  --secondary-hc-color: #aaaaaa;
+  --secondary-lc-color: #dddddd;
+}
+
+body[data-theme="dark"] {
+  --background-color: #111111;
+  --text-color: #ffffff;
+
+  --highlight-color: #27a4dd;
+  --secondary-hc-color: #666666;
+  --secondary-lc-color: #444444;
+}
+
 html, body, #root {
   width: 100%;
   height: 100%;
@@ -11,5 +29,8 @@ html, body, #root {
 }
 
 body {
+  background-color: var(--background-color);
+
+  color: var(--text-color);
   font-family: "Atkinson Hyperlegible", sans-serif;
 }

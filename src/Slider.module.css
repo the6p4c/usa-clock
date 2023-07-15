@@ -1,19 +1,7 @@
-:root {
-  --bar-stroke: #dddddd;
-  --dot-fill: #dddddd;
-  --dot-hover-fill: #aaaaaa;
-}
-
-[data-theme="dark"] {
-  --bar-stroke: #777777;
-  --dot-fill: #444444;
-  --dot-hover-fill: #aaaaaa;
-}
-
 .bar {
   visibility: hidden;
 
-  stroke: var(--bar-stroke);
+  stroke: var(--secondary-lc-color);
   stroke-width: 2px;
   stroke-linecap: round;
 }
@@ -23,11 +11,11 @@
 }
 
 .dot {
-  fill: var(--dot-fill);
+  fill: var(--secondary-lc-color);
 
   cursor: ew-resize;
 }
 
 .dot:hover {
-  fill: var(--dot-hover-fill);
+  fill: var(--secondary-hc-color);
 }
