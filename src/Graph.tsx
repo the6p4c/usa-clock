@@ -29,10 +29,8 @@ export interface GraphProps {
 export default function Graph(props: GraphProps) {
   // Height = (odd multiple of 4 + text gap) in order to start and end bars with dash
   const [width, height] = [240, 99];
-
   const samplesPerHour = 3; // How much subsampling?
   const curvePadding = 1; // Space to leave between top and bottom of graph and curve
-
   const barX = (i: number) => i * width / 4;
   const barHeight = height - 15;
   const textY = height - 4;
