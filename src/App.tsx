@@ -45,7 +45,10 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useLocalStorage("isDarkMode", false);
   const [extrasVisible, setExtrasVisible] = useLocalStorage("extrasVisible", true);
   React.useEffect(() => {
+    const themeColor = isDarkMode ? "#111111" : "#ffffff";
+
     document.body.classList.toggle("dark-mode", isDarkMode);
+    (document.querySelector("meta[name='theme-color']") as any).content = themeColor;
   }, [isDarkMode]);
 
   return <>

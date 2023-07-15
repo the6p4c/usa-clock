@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
     <meta name="description" content="A simple clock displaying an approximate percentage of Americans currently awake." />
 
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -18,7 +19,10 @@
     <script>
       // Set class and theme color early to avoid flash of white when dark mode is enabled
       var isDarkMode = localStorage.getItem("isDarkMode") === "true";
+      var themeColor = isDarkMode ? "#111111" : "#ffffff";
+
       document.body.classList.toggle("dark-mode", isDarkMode);
+      document.querySelector("meta[name='theme-color']").content = themeColor;
     </script>
     <div id="root"></div>
   </body>
