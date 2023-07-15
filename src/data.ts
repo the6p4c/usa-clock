@@ -1,9 +1,9 @@
 import { DateTime } from "luxon";
 
 // Imported in same order as included in data array at bottom of file
-import dataUS from "./dataUS";
-import dataAU from "./dataAU";
-import dataNZ from "./dataNZ";
+import dataUS from "./data/dataUS";
+import dataAU from "./data/dataAU";
+import dataNZ from "./data/dataNZ";
 
 // Utility function for reduce
 const sum = (a: number, b: number) => a + b;

@@ -1,6 +1,6 @@
 import React from "react";
 import Twemoji from "react-twemoji";
-import { Region } from "./data/data";
+import { Region } from "../data";
 import styles from "./RegionSelector.module.css";
 
 export interface RegionSelectorProps {

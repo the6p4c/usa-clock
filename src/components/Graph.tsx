@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import React from "react";
-import { Region } from "./data/data";
+import { Region } from "../data";
 import styles from "./Graph.module.css";
 
 interface Coord {
