@@ -9,7 +9,7 @@ export default function Slider(props: { onDrag: (fraction: number) => void }) {
   const [isDragging, setIsDragging] = React.useState(false);
   const [x, setX] = React.useState(defaultX);
 
-  React.useEffect(() => props.onDrag((x - minX) / (maxX - minX)), [props, x]);
+  React.useEffect(() => props.onDrag((x - minX) / (maxX - minX)), [props, x, minX, maxX]);
 
   const onPointerDown = (e: React.PointerEvent<SVGCircleElement>) => {
     // Make sure we receive the pointerup event no matter if the user moves the cursor off of the

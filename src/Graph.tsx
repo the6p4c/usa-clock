@@ -19,8 +19,8 @@ function pathToD(path: Coord[]) {
 }
 
 export default function Graph(props: { id: string, now: DateTime }) {
-  const width = 240;
-  const height = 99; // = (odd multiple of 4 + text gap) in order to start and end bars with dash
+  // Height = (odd multiple of 4 + text gap) in order to start and end bars with dash
+  const [width, height] = [240, 99];
 
   const samplesPerHour = 3; // How much subsampling?
   const curvePadding = 1; // Space to leave between top and bottom of graph and curve
@@ -28,6 +28,8 @@ export default function Graph(props: { id: string, now: DateTime }) {
   const barX = (i: number) => i * width / 4;
   const barHeight = height - 15;
   const textY = height - 4;
+
+  const [textVisible, setTextVisible] = React.useState(false);
 
   const hours = Array.from({ length: 25 * samplesPerHour }, (_, i) => [i / samplesPerHour - 12, i] as const);
   const path = hours.map(([hour, hourIndex]) => {
@@ -39,28 +41,10 @@ export default function Graph(props: { id: string, now: DateTime }) {
     return { x: Math.round(x), y: Math.round(y) };
   });
 
-  // If we get a touchstart event, mark this as a touch device and ignore mousedown/mouseup events
-  // so we don't get multiple events for essentially the same thing
-  const [isTouch, setIsTouch] = React.useState(false);
-  const [textVisible, setTextVisible] = React.useState(false);
-
-  const onMouseDown = () => {
-    if (isTouch) return;
-    setTextVisible(true);
-  };
-  const onMouseUp = () => {
-    if (isTouch) return;
-    setTextVisible(false);
-  };
-  const onTouchStart = () => {
-    setIsTouch(true);
-    setTextVisible(!textVisible);
-  };
-
   return (
     <svg
       id={props.id} viewBox={`0 0 ${width} ${height}`}
-      onMouseDown={onMouseDown} onMouseUp={onMouseUp} onTouchStart={onTouchStart}
+      onPointerDown={() => setTextVisible(true)} onPointerUp={() => setTextVisible(false)}
     >
       <line className="graph-12" x1={barX(0) + 1} x2={barX(0) + 1 } y1={0} y2={barHeight} />
       <line className="graph-6" x1={barX(1)} x2={barX(1)} y1={0} y2={barHeight} />
