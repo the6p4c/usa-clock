@@ -18,12 +18,12 @@
   fill: none;
 }
 
-.text {
+.label {
   fill: var(--secondary-lc-color);
 
   font-size: 0.7rem;
 }
 
-.textLeft { text-anchor: left; }
-.textMiddle { text-anchor: middle; }
-.textRight { text-anchor: end; }
+.labelLeft { text-anchor: left; }
+.labelMiddle { text-anchor: middle; }
+.labelRight { text-anchor: end; }

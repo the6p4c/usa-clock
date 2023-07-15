@@ -37,7 +37,7 @@ export default function Graph(props: GraphProps) {
   const barHeight = height - 15;
   const textY = height - 4;
 
-  const [textVisible, setTextVisible] = React.useState(false);
+  const [labelsVisible, setLabelsVisible] = React.useState(false);
 
   const hours = Array.from({ length: 25 * samplesPerHour }, (_, i) => [i / samplesPerHour - 12, i] as const);
   const path = hours.map(([hour, hourIndex]) => {
@@ -52,7 +52,7 @@ export default function Graph(props: GraphProps) {
   return (
     <svg
       className={props.className} viewBox={`0 0 ${width} ${height}`}
-      onPointerDown={() => setTextVisible(true)} onPointerUp={() => setTextVisible(false)}
+      onPointerDown={() => setLabelsVisible(true)} onPointerUp={() => setLabelsVisible(false)}
     >
       <line className={styles.bar12} x1={barX(0) + 1} x2={barX(0) + 1 } y1={0} y2={barHeight} />
       <line className={styles.bar6} x1={barX(1)} x2={barX(1)} y1={0} y2={barHeight} />
@@ -60,12 +60,12 @@ export default function Graph(props: GraphProps) {
       <line className={styles.bar6} x1={barX(3)} x2={barX(3)} y1={0} y2={barHeight} />
       <line className={styles.bar12} x1={barX(4) - 1} x2={barX(4) - 1} y1={0} y2={barHeight} />
 
-      {textVisible ? (<>
-        <text className={`${styles.text} ${styles.textLeft}`} x={barX(0) + 1} y={textY}>-12</text>
-        <text className={`${styles.text} ${styles.textMiddle}`} x={barX(1)} y={textY}>-6</text>
-        <text className={`${styles.text} ${styles.textMiddle}`} x={barX(2)} y={textY}>0</text>
-        <text className={`${styles.text} ${styles.textMiddle}`} x={barX(3)} y={textY}>+6</text>
-        <text className={`${styles.text} ${styles.textRight}`} x={barX(4)} y={textY}>+12</text>
+      {labelsVisible ? (<>
+        <text className={`${styles.label} ${styles.labelLeft}`} x={barX(0) + 1} y={textY}>-12</text>
+        <text className={`${styles.label} ${styles.labelMiddle}`} x={barX(1)} y={textY}>-6</text>
+        <text className={`${styles.label} ${styles.labelMiddle}`} x={barX(2)} y={textY}>0</text>
+        <text className={`${styles.label} ${styles.labelMiddle}`} x={barX(3)} y={textY}>+6</text>
+        <text className={`${styles.label} ${styles.labelRight}`} x={barX(4)} y={textY}>+12</text>
       </>) : null}
 
       <path className={styles.curve} d={pathToD(path)} />
