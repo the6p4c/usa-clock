@@ -27,6 +27,19 @@ html, body, #root {
   fill: #666666;
 }
 
+.dark-mode .slider-bar {
+  stroke: #777777;
+}
+
+.dark-mode .slider-dot {
+  fill: #444444;
+}
+
+.dark-mode .slider-dot:hover {
+  fill: #aaaaaa;
+}
+
+
 body {
   font-family: "Atkinson Hyperlegible", sans-serif;
 }
@@ -129,7 +142,7 @@ body {
 .slider-bar {
   visibility: hidden;
 
-  stroke: #777777;
+  stroke: #dddddd;
   stroke-width: 2px;
   stroke-linecap: round;
 }
@@ -139,7 +152,7 @@ body {
 }
 
 .slider-dot {
-  fill: #444444;
+  fill: #dddddd;
 
   cursor: ew-resize;
 }

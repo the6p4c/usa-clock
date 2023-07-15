@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Slider(props: { onDrag: (fraction: number) => void }) {
+export default function Slider(props: { onDrag: (t: number) => void }) {
   const [width, height] = [240, 20];
   const defaultX = width / 2;
   const gapX = 10;

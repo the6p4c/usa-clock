@@ -36,49 +36,41 @@ function useLocalStorage<T>(key: string, defaultValue: T) {
 }
 
 export default function App() {
-  const now = useDate();
   const [timeOffset, setTimeOffset] = React.useState(0);
+  const now = useDate().plus({ hours: timeOffset });
 
-  const nowOffset = now.plus({ hours: timeOffset });
+  const percentage = fractionAwake(now) * 100;
+  const percentageString = percentage.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
   const [isDarkMode, setIsDarkMode] = useLocalStorage("isDarkMode", false);
   const [extrasVisible, setExtrasVisible] = useLocalStorage("extrasVisible", true);
-
-  const percentage = fractionAwake(nowOffset) * 100;
-  const percentageString = percentage.toLocaleString(undefined, { maximumFractionDigits: 0 });
-
   React.useEffect(() => {
-    const themeColor = isDarkMode ? "#111111" : "#ffffff";
-
     document.body.classList.toggle("dark-mode", isDarkMode);
-    (document.querySelector("meta[name='theme-color']") as any).content = themeColor;
   }, [isDarkMode]);
 
-  return (
-    <>
-      <div id="container" className={extrasVisible ? "" : "no-extras"}>
-        <div
-          id="percentage"
-          title={`Approximately ${percentageString}% of Americans currently awake (click to toggle graph)`}
-          onClick={() => setExtrasVisible(!extrasVisible)}
-        >
-          {percentageString}%
-        </div>
-        <Graph id="graph" now={nowOffset} />
-        <Slider onDrag={(fraction) => setTimeOffset(fraction * 24 - 12)} />
-        <div id="signature">
-          <Twemoji noWrapper options={{ className: "emoji" }}>
-            <span>💜 🐶</span>
-          </Twemoji>
-        </div>
-      </div>
+  return <>
+    <div id="container" className={extrasVisible ? "" : "no-extras"}>
       <div
-        id="skin-toggle"
-        title={`Click to change to ${isDarkMode ? "light mode" : "dark mode"}`}
-        onClick={() => setIsDarkMode(!isDarkMode)}
+        id="percentage"
+        title={`Approximately ${percentageString}% of Americans are currently awake (click to toggle graph)`}
+        onClick={() => setExtrasVisible(!extrasVisible)}
       >
-        {isDarkMode ? <FontAwesomeIcon icon={faLightbulb} /> : <FontAwesomeIcon icon={faMoon} />}
+        {percentageString}%
       </div>
-    </>
-  );
+      <Graph id="graph" now={now} />
+      <Slider onDrag={t => setTimeOffset(t * 24 - 12)} />
+      <div id="signature">
+        <Twemoji noWrapper options={{ className: "emoji" }}>
+          <span>💜 🐶</span>
+        </Twemoji>
+      </div>
+    </div>
+    <div
+      id="skin-toggle"
+      title={`Click to change to ${isDarkMode ? "light mode" : "dark mode"}`}
+      onClick={() => setIsDarkMode(!isDarkMode)}
+    >
+      {isDarkMode ? <FontAwesomeIcon icon={faLightbulb} /> : <FontAwesomeIcon icon={faMoon} />}
+    </div>
+  </>;
 }
