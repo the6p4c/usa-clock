@@ -39,6 +39,22 @@ export default function Graph(props: GraphProps) {
 
   const [labelsVisible, setLabelsVisible] = React.useState(false);
 
+  // Determine if this is a touch device by using the touchstart event: ignore all mouseenter and
+  // mouseleave events if so
+  const [isTouch, setIsTouch] = React.useState(false);
+  const onMouseEnter = () => {
+    if (isTouch) return;
+    setLabelsVisible(true);
+  };
+  const onMouseLeave = () => {
+    if (isTouch) return;
+    setLabelsVisible(false);
+  };
+  const onTouchStart = () => {
+    setIsTouch(true);
+    setLabelsVisible(!labelsVisible);
+  };
+
   const hours = Array.from({ length: 25 * samplesPerHour }, (_, i) => [i / samplesPerHour - 12, i] as const);
   const path = hours.map(([hour, hourIndex]) => {
     const fraction = props.region.fractionAwake(props.now.plus({ hours: hour }));
@@ -52,7 +68,8 @@ export default function Graph(props: GraphProps) {
   return (
     <svg
       className={props.className} viewBox={`0 0 ${width} ${height}`}
-      onPointerDown={() => setLabelsVisible(true)} onPointerUp={() => setLabelsVisible(false)}
+      onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
+      onTouchStart={onTouchStart}
     >
       <line className={styles.bar12} x1={barX(0) + 1} x2={barX(0) + 1} y1={0} y2={barHeight} />
       <line className={styles.bar6} x1={barX(1)} x2={barX(1)} y1={0} y2={barHeight} />
