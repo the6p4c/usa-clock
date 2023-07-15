@@ -1,3 +1,22 @@
+.name {
+  padding-bottom: 0.2rem;
+
+  color: var(--secondary-hc-color);
+  font-size: 0.9rem;
+
+  opacity: 0;
+}
+
+.fadeOut {
+  animation: 1s fadeOut;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  30% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 .flag.unselected {
   opacity: 0.2;
   
