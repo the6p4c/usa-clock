@@ -1,6 +1,10 @@
 :root {
   --background-color: #ffffff;
   --text-color: #000000;
+  --link-color: #1498cc;
+  --link-hover-color: #0f759e;
+  --link-visited-color: #9f6aeb;
+  --link-visited-hover-color: #823de5;
 
   --highlight-color: #27a4dd;
   --secondary-hc-color: #aaaaaa;
@@ -33,4 +37,41 @@ body {
 
   color: var(--text-color);
   font-family: "Atkinson Hyperlegible", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin: 0.5rem 0;
+
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+code {
+  font-size: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: var(--link-color);
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+a:visited {
+  color: var(--link-visited-color);
+}
+
+a:visited:hover {
+  color: var(--link-visited-hover-color);
 }

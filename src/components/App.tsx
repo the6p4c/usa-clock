@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faLightbulb } from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo, faMoon, faLightbulb } from "@fortawesome/free-solid-svg-icons";
 import throttle from "lodash.throttle";
 import { DateTime } from "luxon";
 import React from "react";
 import styles from "./App.module.css";
 import regions from "../data";
 import Graph from "./Graph";
+import InfoModal from "./InfoModal";
 import RegionSelector from "./RegionSelector";
 import Slider from "./Slider";
 
@@ -36,7 +37,16 @@ function useLocalStorage<T>(key: string, defaultValue: T) {
   return [value, setValue] as const;
 }
 
-function ThemeToggle() {
+function InfoModalToggle(props: { className: string, onClick: () => void }) {
+  return <div
+    className={styles.sidebarIcon}
+    title="About"
+  >
+    <FontAwesomeIcon icon={faCircleInfo} onClick={props.onClick} />
+  </div>;
+}
+
+function ThemeToggle(props: { className: string }) {
   const [isDarkTheme, setIsDarkTheme] = useLocalStorage("isDarkTheme", false);
   React.useEffect(() => {
     // Remember to keep this in sync with similar code in index.html
@@ -48,11 +58,18 @@ function ThemeToggle() {
   }, [isDarkTheme]);
 
   return <div
-    className={styles.themeToggle}
+    className={`${props.className} ${styles.themeToggle}`}
     title={`Click to change to ${isDarkTheme ? "light mode" : "dark mode"}`}
     onClick={() => setIsDarkTheme(!isDarkTheme)}
   >
     {isDarkTheme ? <FontAwesomeIcon icon={faLightbulb} /> : <FontAwesomeIcon icon={faMoon} />}
+  </div>;
+}
+
+function Sidebar(props: { onInfoClick: () => void }) {
+  return <div className={styles.sidebar}>
+    <InfoModalToggle className={styles.sidebarIcon} onClick={props.onInfoClick} />
+    <ThemeToggle className={styles.sidebarIcon} />
   </div>;
 }
 
@@ -64,6 +81,7 @@ export default function App() {
   const now = useDate().plus({ hours: timeOffset });
 
   const [extrasVisible, setExtrasVisible] = useLocalStorage("extrasVisible", true);
+  const [infoModalVisible, setInfoModalVisible] = React.useState(false);
 
   const percentage = region.fractionAwake(now) * 100;
   const percentageString = percentage.toLocaleString(undefined, { maximumFractionDigits: 0 });
@@ -82,6 +100,7 @@ export default function App() {
       className={styles.regionSelector}
       regions={regions} id={regionId} onChange={id => setRegionId(id)}
     />
-    <ThemeToggle />
+    <Sidebar onInfoClick={() => setInfoModalVisible(true)} />
+    <InfoModal visible={infoModalVisible} onClose={() => setInfoModalVisible(false)} />
   </div>;
 }

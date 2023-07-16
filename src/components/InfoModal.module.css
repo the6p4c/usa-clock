@@ -1,0 +1,48 @@
+.infoModal {
+  display: grid;
+  grid-template-columns: 1fr;
+  visibility: hidden;
+
+  position: absolute;
+  inset: 0;
+
+  background-color: var(--background-color);
+
+  overflow-y: auto;
+}
+
+@media(min-width: 800px) {
+  .infoModal {
+    grid-template-columns: auto 800px auto;
+  }
+}
+
+.visible {
+  visibility: visible;
+}
+
+.container {
+  grid-column-start: 1;
+
+  padding: 2rem;
+}
+
+@media(min-width: 800px) {
+  .container {
+    grid-column-start: 2;
+  }
+}
+
+.close {
+  margin-top: 1rem;
+  margin-right: 1rem;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  font-size: 1.3rem;
+  text-align: center;
+
+  cursor: pointer;
+}

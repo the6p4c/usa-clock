@@ -1,6 +1,4 @@
 const data = {
-  // Australian Bureau of Statistics data
-  // https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/latest-release
   populations: {
     "Australian Capital Territory": 460900,
     "New South Wales": 8238800,
@@ -11,7 +9,6 @@ const data = {
     "Victoria": 6704300,
     "Western Australia": 2825200,
   },
-  // Collated from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   timezones: {
     "Australia/Canberra": ["Australian Capital Territory"],
     "Australia/Sydney": ["New South Wales"],
@@ -22,8 +19,6 @@ const data = {
     "Australia/Melbourne": ["Victoria"],
     "Australia/Perth": ["Western Australia"],
   },
-  // Australian Bureau of Statistics data; Table 13.1
-  // https://www.abs.gov.au/statistics/people/people-and-communities/how-australians-use-their-time/latest-release
   fractionAsleepAt: [
     // 12am (midnight)
     0.92,

@@ -1,14 +1,11 @@
 const data = {
-  // One timezone - unneeded
   populations: {
     "": 1,
   },
-  // From https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   timezones: {
     "Pacific/Auckland": [""],
   },
-  // Australian Bureau of Statistics data; Table 13.1
-  // https://www.abs.gov.au/statistics/people/people-and-communities/how-australians-use-their-time/latest-release
+  // TODO: Australian data
   fractionAsleepAt: [
     // 12am (midnight)
     0.92,

@@ -51,14 +51,21 @@
   text-align: center;
 }
 
-.themeToggle {
+.sidebar {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1rem;
+
   position: absolute;
   top: 0;
   right: 0;
+}
 
-  margin: 1rem;
-
-  cursor: pointer;
+.sidebarIcon {
+  margin-right: 1rem;
 
   font-size: 1.3rem;
+  text-align: center;
+
+  cursor: pointer;
 }

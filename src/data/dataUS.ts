@@ -1,6 +1,4 @@
 const data = {
-  // United States Census Bureau data
-  // https://data.census.gov/table?q=est2022-pop&tid=DECENNIALDHC2020.P1
   populations: {
     "Alabama": 5024279,
     "Alaska": 733391,
@@ -55,8 +53,6 @@ const data = {
     "Wyoming": 576851,
     "Puerto Rico": 3285874
   },
-  // Collated from https://www.nationsonline.org/oneworld/map/US-timezone_map.htm and
-  // http://efele.net/maps/tz/us/
   timezones: {
     // Mainland USA
     "America/Los_Angeles": [
@@ -129,8 +125,6 @@ const data = {
       "Hawaii"
     ],
   },
-  // Collated from BLS data, e.g. "Percent participating on an avg day - Sleeping, 10am-11am"
-  // https://beta.bls.gov/dataViewer/view/timeseries/TUU30105AA01051617
   fractionAsleepAt: [
     // 12am (midnight)
     0.866,
