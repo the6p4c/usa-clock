@@ -46,13 +46,25 @@ function Sidebar(props: { onInfoClick: () => void }) {
 
 export default function App(props: { defaultRegionId: string | null }) {
   const [regionId, setRegionId] = useLocalStorage("regionId", regions[0].id, () => {
-    if (regions.find(({ id, ..._ }) => id === props.defaultRegionId)) {
+    if (props.defaultRegionId !== null && regions.getRegionByIdOrNull(props.defaultRegionId) !== null) {
       return props.defaultRegionId;
     } else {
       return null;
     }
   });
-  const region = regions.find(({ id, ..._ }) => id === regionId) || regions[0];
+  const region = regions.getRegionByIdOrNull(regionId) || regions[0];
+
+  const [toastText, setToastText] = React.useState("");
+  const changeRegion = (id: string) => {
+    setRegionId(id);
+    setToastText(regions.getRegionById(id).name);
+  }
+  const copyURL = (id: string) => {
+    const url = `${window.origin}${window.location.pathname}${window.location.search}#${id}`;
+    navigator.clipboard.writeText(url);
+
+    setToastText(`copied link to ${regions.getRegionById(id).name}!`);
+  };
 
   const [infoModalVisible, setInfoModalVisible] = React.useState(false);
 
@@ -60,7 +72,9 @@ export default function App(props: { defaultRegionId: string | null }) {
     <Clock className={styles.clock} region={region} />
     <RegionSelector
       className={styles.regionSelector}
-      regions={regions} id={regionId} onChange={id => setRegionId(id)}
+      regions={regions} id={regionId}
+      toastText={toastText}
+      onChange={changeRegion} onHold={copyURL}
     />
     <Sidebar onInfoClick={() => setInfoModalVisible(true)} />
     <InfoModal visible={infoModalVisible} onClose={() => setInfoModalVisible(false)} />

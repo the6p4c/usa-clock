@@ -62,10 +62,38 @@ export class Region {
   }
 }
 
-const data = [
+class Regions extends Array<Region> {
+  static fromArray(items: Region[]) {
+    const regions = new Regions();
+    regions.push(...items);
+    return regions;
+  }
+
+  getRegionById(id: string) {
+    const wantedId = id;
+    const region = this.find(({ id, ..._ }) => id === wantedId);
+    if (region) {
+      return region;
+    } else {
+      throw new Error(`could not find region with id ${id}`);
+    }
+  }
+
+  getRegionByIdOrNull(id: string) {
+    const wantedId = id;
+    const region = this.find(({ id, ..._ }) => id === wantedId);
+    if (region) {
+      return region;
+    } else {
+      return null;
+    }
+  }
+}
+
+const data = Regions.fromArray([
   { id: "us", name: "America", demonym: "Americans", flag: "🇺🇸", raw: dataUS },
   { id: "au", name: "Australia", demonym: "Australians", flag: "🇦🇺", raw: dataAU },
   { id: "nz", name: "New Zealand", demonym: "Kiwis", flag: "🇳🇿", raw: dataNZ }, // TODO: fractionAsleepAt
-].map(data => new Region(data));
+].map(data => new Region(data)));
 
 export default data;

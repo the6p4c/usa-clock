@@ -8,13 +8,40 @@ export interface FlagProps {
   region: Region;
 
   onClick: () => void;
+  onHold: () => void;
 }
 
 function Flag(props: FlagProps) {
+  const [state, setState] = React.useState<"off" | "waiting" | "triggered">("off");
+
+  const holdDelay = 2000;
+  const onHold = props.onHold;
+  React.useEffect(() => {
+    if (state === "waiting") {
+      const timeout = setTimeout(() => {
+        setState("triggered");
+        onHold();
+      }, holdDelay);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [state, onHold]);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLSpanElement>) => {
+    // Make sure we receive the pointerup event even if the user moves off of the flag element
+    (e.target as HTMLSpanElement).setPointerCapture(e.pointerId);
+    setState("waiting");
+  };
+
+  const onPointerUp = () => {
+    if (state === "waiting") props.onClick();
+    setState("off");
+  };
+
   return <span
     className={`${styles.flag} ${props.selected ? "" : styles.unselected}`}
     title={`${props.selected ? "Current region is" : "Change region to"} ${props.region.name}`}
-    onClick={props.onClick}
+    onPointerDown={onPointerDown} onPointerUp={onPointerUp}
   >
     {props.region.flag}{" "}
   </span>;
@@ -25,27 +52,27 @@ export interface RegionSelectorProps {
 
   regions: Region[];
   id: string;
+  toastText: string;
   onChange: (id: string) => void;
+  onHold: (id: string) => void;
 }
 
 export default function RegionSelector(props: RegionSelectorProps) {
-  const [toastText, setToastText] = React.useState("");
   // Fade out class initially unapplied so that page load/refresh doesn't show toast
   const [toastFadeOut, setToastFadeOut] = React.useState(false);
-  const showToast = (text: string) => {
-    setToastText(text);
+  const toastText = props.toastText;
+  React.useEffect(() => {
     // Remove fade out class and re-add to restart animation
     setToastFadeOut(false)
     setTimeout(() => setToastFadeOut(true), 10);
-  };
+  }, [toastText]);
 
   const flags = props.regions.length === 1 ? null : props.regions.map(region => {
-    const onClick = () => {
-      showToast(region.name);
-      props.onChange(region.id);
-    };
-
-    return <Flag key={region.id} selected={props.id === region.id} region={region} onClick={onClick} />;
+    return <Flag
+      key={region.id}
+      selected={props.id === region.id} region={region}
+      onClick={() => props.onChange(region.id)} onHold={() => props.onHold(region.id)}
+    />;
   });
 
   return <div className={props.className}>
