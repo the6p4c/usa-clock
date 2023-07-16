@@ -22,8 +22,13 @@ function useDate() {
   return now;
 }
 
-function useLocalStorage<T>(key: string, defaultValue: T) {
+function useLocalStorage<T>(key: string, defaultValue: T, overrideValue: (() => T | null) = (() => null)) {
   const [value, setValue] = React.useState(() => {
+    const overriddenValue = overrideValue();
+    if (overriddenValue !== null) {
+      return overriddenValue;
+    }
+
     const value = localStorage.getItem(key);
     if (value != null) {
       return JSON.parse(value) as T;
@@ -73,8 +78,14 @@ function Sidebar(props: { onInfoClick: () => void }) {
   </div>;
 }
 
-export default function App() {
-  const [regionId, setRegionId] = useLocalStorage("regionId", regions[0].id);
+export default function App(props: { defaultRegionId: string | null }) {
+  const [regionId, setRegionId] = useLocalStorage("regionId", regions[0].id, () => {
+    if (regions.find(({ id, ..._ }) => id === props.defaultRegionId)) {
+      return props.defaultRegionId;
+    } else {
+      return null;
+    }
+  });
   const region = regions.find(({ id, ..._ }) => id === regionId) || regions[0];
 
   const [timeOffset, setTimeOffset] = React.useState(0);

@@ -8,9 +8,13 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+const defaultRegionId = window.location.hash.split("#")[1] || null;
+// Remove the hash
+window.history.pushState("", document.title, window.location.pathname + window.location.search);
+
 root.render(
   <React.StrictMode>
-    <App />
+    <App defaultRegionId={defaultRegionId} />
   </React.StrictMode>
 );
 
