@@ -1,21 +1,33 @@
-name: node-build-push
-run-name: build and push to pages branch
-on:
-  push:
-    branches:
-      - main
+name: build-and-deploy
+run-name: build and deploy to pages
+on: push
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: setup node
+        uses: actions/setup-node@v3
         with:
           node-version: 'latest'
-      - run: npm install .
-      - run: npm run build
-      - run: |
-          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          npx gh-pages -d build -u "github-actions-bot <support+actions@github.com>"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: install app
+        run: npm install .
+      - name: build app
+        run: npm run build
+      - name: upload pages artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: 'build/'
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy to pages
+        uses: actions/deploy-pages@v2
