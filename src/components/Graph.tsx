@@ -10,7 +10,7 @@ interface Coord {
 
 function pathToD(path: Coord[]) {
   function round(v: number): string {
-    return v.toLocaleString(undefined, { maximumFractionDigits: 3 });
+    return v.toLocaleString('en-US', { maximumFractionDigits: 3 });
   }
 
   function command(command: string, {x, y}: Coord) {
