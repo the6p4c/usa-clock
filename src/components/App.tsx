@@ -65,7 +65,6 @@ export default function App(props: { defaultRegionId: string | null }) {
     showToast(regions.getRegionById(id).name);
   }
   const copyURL = (id: string) => {
-    console.log("in copyURL");
     const url = `${window.origin}${window.location.pathname}${window.location.search}#${id}`;
     try {
       navigator.clipboard.writeText(url);
