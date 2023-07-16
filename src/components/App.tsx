@@ -61,9 +61,10 @@ export default function App(props: { defaultRegionId: string | null }) {
   }
   const copyURL = (id: string) => {
     const url = `${window.origin}${window.location.pathname}${window.location.search}#${id}`;
-    navigator.clipboard.writeText(url);
-
-    setToastText(`copied link to ${regions.getRegionById(id).name}!`);
+    try {
+      navigator.clipboard.writeText(url);
+      setToastText(`copied link to ${regions.getRegionById(id).name}!`);
+    } catch {}
   };
 
   const [infoModalVisible, setInfoModalVisible] = React.useState(false);

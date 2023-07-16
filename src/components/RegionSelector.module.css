@@ -25,4 +25,6 @@
 
 .emoji {
   width: 1.5rem;
+
+  -webkit-touch-callout: none;
 }
