@@ -1,46 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo, faMoon, faLightbulb } from "@fortawesome/free-solid-svg-icons";
-import throttle from "lodash.throttle";
-import { DateTime } from "luxon";
 import React from "react";
 import styles from "./App.module.css";
+import Clock from "./Clock";
 import regions from "../data";
-import Graph from "./Graph";
 import InfoModal from "./InfoModal";
 import RegionSelector from "./RegionSelector";
-import Slider from "./Slider";
-
-function useDate() {
-  const [now, setNow] = React.useState(DateTime.now());
-
-  React.useEffect(() => {
-    const timer = setInterval(() => setNow(DateTime.now()), 1000);
-    //const timer = setInterval(() => setNow(now.plus({ minutes: 15 })), 500);
-    return () => clearInterval(timer);
-  });
-
-  return now;
-}
-
-function useLocalStorage<T>(key: string, defaultValue: T, overrideValue: (() => T | null) = (() => null)) {
-  const [value, setValue] = React.useState(() => {
-    const overriddenValue = overrideValue();
-    if (overriddenValue !== null) {
-      return overriddenValue;
-    }
-
-    const value = localStorage.getItem(key);
-    if (value != null) {
-      return JSON.parse(value) as T;
-    } else {
-      return defaultValue;
-    }
-  });
-
-  React.useEffect(() => localStorage.setItem(key, JSON.stringify(value)), [key, value]);
-
-  return [value, setValue] as const;
-}
+import useLocalStorage from "../useLocalStorage";
 
 function InfoModalToggle(props: { className: string, onClick: () => void }) {
   return <div
@@ -88,25 +54,10 @@ export default function App(props: { defaultRegionId: string | null }) {
   });
   const region = regions.find(({ id, ..._ }) => id === regionId) || regions[0];
 
-  const [timeOffset, setTimeOffset] = React.useState(0);
-  const now = useDate().plus({ hours: timeOffset });
-
-  const [extrasVisible, setExtrasVisible] = useLocalStorage("extrasVisible", true);
   const [infoModalVisible, setInfoModalVisible] = React.useState(false);
 
-  const percentage = region.fractionAwake(now) * 100;
-  const percentageString = percentage.toLocaleString(undefined, { maximumFractionDigits: 0 });
-
-  return <div className={`${styles.container} ${extrasVisible ? "" : styles.noExtras}`}>
-    <div
-      className={styles.percentage}
-      title={`Approximately ${percentageString}% of ${region.demonym} are currently awake (click to ${extrasVisible ? "hide" : "show" } graph)`}
-      onClick={() => setExtrasVisible(!extrasVisible)}
-    >
-      {percentageString}%
-    </div>
-    <Graph className={styles.graph} region={region} now={now} />
-    <Slider className={styles.slider} onChange={throttle(t => setTimeOffset(t * 24 - 12), 20)} />
+  return <div className={styles.container}>
+    <Clock className={styles.clock} region={region} />
     <RegionSelector
       className={styles.regionSelector}
       regions={regions} id={regionId} onChange={id => setRegionId(id)}

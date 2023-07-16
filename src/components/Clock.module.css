@@ -1,0 +1,15 @@
+.percentage {
+  font-size: 5rem;
+  font-weight: 700;
+  text-align: center;
+
+  cursor: pointer;
+}
+
+.graph, .slider {
+  margin: 0 auto;
+}
+
+.noExtras > .graph, .noExtras > .slider {
+  display: none;
+}
