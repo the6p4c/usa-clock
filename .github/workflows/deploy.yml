@@ -1,5 +1,5 @@
-name: deploy
-run-name: build and deploy to pages
+name: node-build-push
+run-name: build and push to pages branch
 on:
   push:
     branches:
