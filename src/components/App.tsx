@@ -55,15 +55,21 @@ export default function App(props: { defaultRegionId: string | null }) {
   const region = regions.getRegionByIdOrNull(regionId) || regions[0];
 
   const [toastText, setToastText] = React.useState("");
+  const showToast = (text: string) => {
+    setToastText("");
+    setTimeout(() => setToastText(text), 10);
+  };
+
   const changeRegion = (id: string) => {
     setRegionId(id);
-    setToastText(regions.getRegionById(id).name);
+    showToast(regions.getRegionById(id).name);
   }
   const copyURL = (id: string) => {
+    console.log("in copyURL");
     const url = `${window.origin}${window.location.pathname}${window.location.search}#${id}`;
     try {
       navigator.clipboard.writeText(url);
-      setToastText(`copied link to ${regions.getRegionById(id).name}!`);
+      showToast(`copied link to ${regions.getRegionById(id).name}!`);
     } catch {}
   };
 

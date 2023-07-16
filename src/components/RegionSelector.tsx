@@ -14,7 +14,7 @@ export interface FlagProps {
 function Flag(props: FlagProps) {
   const [state, setState] = React.useState<"off" | "waiting" | "triggered">("off");
 
-  const holdDelay = 2000;
+  const holdDelay = 1000;
   const onHold = props.onHold;
   React.useEffect(() => {
     if (state === "waiting") {
@@ -63,7 +63,7 @@ export default function RegionSelector(props: RegionSelectorProps) {
   const toastText = props.toastText;
   React.useEffect(() => {
     // Remove fade out class and re-add to restart animation
-    setToastFadeOut(false)
+    setToastFadeOut(false);
     setTimeout(() => setToastFadeOut(true), 10);
   }, [toastText]);
 
