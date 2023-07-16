@@ -1,4 +1,4 @@
-.name {
+.toast {
   padding-bottom: 0.2rem;
 
   color: var(--secondary-hc-color);
@@ -7,11 +7,11 @@
   opacity: 0;
 }
 
-.fadeOut {
-  animation: 1.5s fadeOut;
+.toastFadeOut {
+  animation: 1.5s toastFadeOut;
 }
 
-@keyframes fadeOut {
+@keyframes toastFadeOut {
   0% { opacity: 1; }
   50% { opacity: 1; }
   100% { opacity: 0; }

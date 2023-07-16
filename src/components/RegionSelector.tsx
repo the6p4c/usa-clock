@@ -3,6 +3,23 @@ import Twemoji from "react-twemoji";
 import { Region } from "../data";
 import styles from "./RegionSelector.module.css";
 
+export interface FlagProps {
+  selected: boolean;
+  region: Region;
+
+  onClick: () => void;
+}
+
+function Flag(props: FlagProps) {
+  return <span
+    className={`${styles.flag} ${props.selected ? "" : styles.unselected}`}
+    title={`${props.selected ? "Current region is" : "Change region to"} ${props.region.name}`}
+    onClick={props.onClick}
+  >
+    {props.region.flag}{" "}
+  </span>;
+}
+
 export interface RegionSelectorProps {
   className: string;
 
@@ -12,35 +29,27 @@ export interface RegionSelectorProps {
 }
 
 export default function RegionSelector(props: RegionSelectorProps) {
-  const [name, setName] = React.useState("");
-  // Fade out class initially unapplied so that page load/refresh doesn't show region name
-  const [fadeOut, setFadeOut] = React.useState(false);
+  const [toastText, setToastText] = React.useState("");
+  // Fade out class initially unapplied so that page load/refresh doesn't show toast
+  const [toastFadeOut, setToastFadeOut] = React.useState(false);
+  const showToast = (text: string) => {
+    setToastText(text);
+    // Remove fade out class and re-add to restart animation
+    setToastFadeOut(false)
+    setTimeout(() => setToastFadeOut(true), 10);
+  };
 
-  const flags = props.regions.length === 1 ? null : props.regions.map(({id, name, flag}) => {  
-    const isSelected = props.id === id;
-
+  const flags = props.regions.length === 1 ? null : props.regions.map(region => {
     const onClick = () => {
-      setName(name);
-
-      // Remove fade out class and re-add to restart animation
-      setFadeOut(false)
-      setTimeout(() => setFadeOut(true), 10);
-
-      props.onChange(id);
+      showToast(region.name);
+      props.onChange(region.id);
     };
 
-    return <span
-      key={id}
-      className={`${styles.flag} ${isSelected ? "" : styles.unselected}`}
-      title={isSelected ? `Current region is ${name}` : `Change region to ${name}`}
-      onClick={onClick}
-    >
-      {flag}{" "}
-    </span>;
+    return <Flag key={region.id} selected={props.id === region.id} region={region} onClick={onClick} />;
   });
 
   return <div className={props.className}>
-    <div className={`${styles.name} ${fadeOut ? styles.fadeOut : ""}`}>{name}</div>
+    <div className={`${styles.toast} ${toastFadeOut ? styles.toastFadeOut : ""}`}>{toastText}</div>
     <Twemoji options={{ className: styles.emoji }}>
       💜 {flags} 🐶
     </Twemoji>
