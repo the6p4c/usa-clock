@@ -63,7 +63,7 @@ export class Region {
 }
 
 const data = [
-  { id: "us", name: "USA", demonym: "Americans", flag: "🇺🇸", raw: dataUS },
+  { id: "us", name: "America", demonym: "Americans", flag: "🇺🇸", raw: dataUS },
   { id: "au", name: "Australia", demonym: "Australians", flag: "🇦🇺", raw: dataAU },
   { id: "nz", name: "New Zealand", demonym: "Kiwis", flag: "🇳🇿", raw: dataNZ }, // TODO: fractionAsleepAt
 ].map(data => new Region(data));
