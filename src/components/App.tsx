@@ -18,7 +18,14 @@ function InfoModalToggle(props: { className: string, onClick: () => void }) {
 }
 
 function ThemeToggle(props: { className: string }) {
-  const [isDarkTheme, setIsDarkTheme] = useLocalStorage("isDarkTheme", false);
+  const [isDarkTheme, setIsDarkTheme] = useLocalStorage("isDarkTheme", () => {
+    try {
+      // Maybe this can fail. I don't know.
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    } catch {
+      return false;
+    }
+  });
   React.useEffect(() => {
     // Remember to keep this in sync with similar code in index.html
     const theme = isDarkTheme ? "dark" : "light";

@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function useLocalStorage<T>(key: string, defaultValue: T, overrideValue: (() => T | null) = (() => null)) {
+export default function useLocalStorage<T>(
+  key: string,
+  defaultValue: (T | (() => T)),
+  overrideValue: (() => T | null) = (() => null)
+) {
   const [value, setValue] = React.useState(() => {
     const overriddenValue = overrideValue();
     if (overriddenValue !== null) {
@@ -11,7 +15,11 @@ export default function useLocalStorage<T>(key: string, defaultValue: T, overrid
     if (value != null) {
       return JSON.parse(value) as T;
     } else {
-      return defaultValue;
+      if (defaultValue instanceof Function) {
+        return defaultValue();
+      } else {
+        return defaultValue;
+      }
     }
   });
 
