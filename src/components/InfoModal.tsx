@@ -22,6 +22,11 @@ export default function InfoModal(props: InfoModalProps) {
         Source available on <a href="https://github.com/the6p4c/usa-clock">GitHub</a>.
       </p>
 
+      <h2>Progressive Web Application (PWA)</h2>
+      <p>
+        You can install this site as a PWA in-browser, or more usefully on iOS or Android as a home screen icon. On iOS, open in Safari and select the share icon, then Add to Home Screen.
+      </p>
+
       <h1>Data sources</h1>
       <h2>America</h2>
       <p>
