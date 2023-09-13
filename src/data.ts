@@ -2,6 +2,7 @@ import { DateTime } from "luxon";
 
 // Imported in same order as included in data array at bottom of file
 import dataUS from "./data/dataUS";
+import dataCA from "./data/dataCA";
 import dataAU from "./data/dataAU";
 import dataNZ from "./data/dataNZ";
 
@@ -92,6 +93,7 @@ class Regions extends Array<Region> {
 
 const data = Regions.fromArray([
   { id: "us", name: "America", demonym: "Americans", flag: "🇺🇸", raw: dataUS },
+  { id: "ca", name: "Canada", demonym: "Canadians", flag: "🇨🇦", raw: dataCA },
   { id: "au", name: "Australia", demonym: "Australians", flag: "🇦🇺", raw: dataAU },
   { id: "nz", name: "New Zealand", demonym: "Kiwis", flag: "🇳🇿", raw: dataNZ }, // TODO: fractionAsleepAt
 ].map(data => new Region(data)));
