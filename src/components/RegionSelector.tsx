@@ -1,6 +1,7 @@
 import React from "react";
 import Twemoji from "react-twemoji";
 import { Region } from "../data";
+import useLocalStorage from "../useLocalStorage";
 import styles from "./RegionSelector.module.css";
 
 export interface FlagProps {
@@ -67,7 +68,12 @@ export default function RegionSelector(props: RegionSelectorProps) {
     setTimeout(() => setToastFadeOut(true), 10);
   }, [toastText]);
 
+  const [secretClicks, setSecretClicks] = React.useState(0);
+  const [secretVisible, setSecretVisible] = useLocalStorage("secretVisible", false);
+
   const flags = props.regions.length === 1 ? null : props.regions.map(region => {
+    if (region.secret && !secretVisible) return null;
+
     return <Flag
       key={region.id}
       selected={props.id === region.id} region={region}
@@ -75,10 +81,18 @@ export default function RegionSelector(props: RegionSelectorProps) {
     />;
   });
 
+  const incrementSecretClicks = () => {
+    const clicks = secretClicks + 1;
+    setSecretClicks(clicks);
+    setSecretVisible(secretVisible || clicks >= 5)
+  };
+
   return <div className={props.className}>
     <div className={`${styles.toast} ${toastFadeOut ? styles.toastFadeOut : ""}`}>{toastText}</div>
     <Twemoji options={{ className: styles.emoji }}>
-      💜 {flags} 🐶
+      <span>💜</span>
+      {" "} {flags} {" "}
+      <span onClick={incrementSecretClicks}>🐶</span>
     </Twemoji>
   </div>;
 }

@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 import dataUS from "./data/dataUS";
 import dataAU from "./data/dataAU";
 import dataNZ from "./data/dataNZ";
+import dataVyvanse from "./data/dataVyvanse";
 
 // Utility function for reduce
 const sum = (a: number, b: number) => a + b;
@@ -19,6 +20,7 @@ interface RegionData {
   name: string;
   demonym: string;
   flag: string;
+  secret?: boolean;
   raw: RegionRawData;
 }
 
@@ -27,6 +29,7 @@ export class Region {
   readonly name: string;
   readonly demonym: string;
   readonly flag: string;
+  readonly secret: boolean;
   private readonly populationPerTimezone: (readonly [string, number])[];
   private readonly fractionAwakeAt: number[];
   private readonly totalPopulation: number;
@@ -36,6 +39,7 @@ export class Region {
     this.name = data.name;
     this.demonym = data.demonym;
     this.flag = data.flag;
+    this.secret = data.secret || false;
 
     const raw = data.raw;
 
@@ -94,6 +98,7 @@ const data = Regions.fromArray([
   { id: "us", name: "America", demonym: "Americans", flag: "🇺🇸", raw: dataUS },
   { id: "au", name: "Australia", demonym: "Australians", flag: "🇦🇺", raw: dataAU },
   { id: "nz", name: "New Zealand", demonym: "Kiwis", flag: "🇳🇿", raw: dataNZ }, // TODO: fractionAsleepAt
+  { id: "vyvanse", name: "Vyvanse", demonym: "puppies", flag: "💊", secret: true, raw: dataVyvanse },
 ].map(data => new Region(data)));
 
 export default data;
