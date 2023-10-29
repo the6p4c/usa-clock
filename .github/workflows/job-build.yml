@@ -1,6 +1,6 @@
-name: build-and-deploy
-run-name: build and deploy to pages
-on: push
+name: build
+on: workflow_call
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,15 +19,3 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           path: 'build/'
-  deploy:
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: deploy to pages
-        uses: actions/deploy-pages@v2

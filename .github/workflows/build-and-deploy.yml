@@ -1,0 +1,15 @@
+name: build-and-deploy
+run-name: build and deploy to pages (main branch)
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    uses: ./.github/workflows/job-build.yml
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/job-deploy.yml

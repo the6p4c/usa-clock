@@ -1,5 +1,5 @@
 # [USA Clock](https://the6p4c.github.io/usa-clock)
-[![build-and-deploy](https://github.com/the6p4c/usa-clock/actions/workflows/deploy.yml/badge.svg)](https://github.com/the6p4c/usa-clock/actions/workflows/deploy.yml)
+[![build-and-deploy](https://github.com/the6p4c/usa-clock/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/the6p4c/usa-clock/actions/workflows/build-and-deploy.yml)
 
 A simple clock displaying an approximate percentage of Americans (and now, other people!) currently awake.
 

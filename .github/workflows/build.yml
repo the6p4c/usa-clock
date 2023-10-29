@@ -1,0 +1,15 @@
+name: build-only
+run-name: build only (non-main branch)
+on:
+  push:
+    branches-ignore:
+      - main
+jobs:
+  build:
+    uses: ./.github/workflows/job-build.yml
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/job-deploy.yml
